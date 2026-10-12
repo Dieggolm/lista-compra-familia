@@ -1,684 +1,207 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de la Compra - LOPEZ MELENDO</title>
-    <!-- Tailwind CSS for modern responsive styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de la Compra Familiar - LOPEZ MELENDO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col">
+<body class="bg-slate-100 min-h-screen pb-10 font-sans">
 
-    <header class="bg-gradient-to-r from-violet-600 to-indigo-700 text-white shadow-md sticky top-0 z-30">
-        <div class="max-w-3xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm">
-                    <i class="fa-solid fa-basket-shopping text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg leading-tight">Lista Familia</h1>
-                    <div class="flex items-center space-x-1.5 text-xs text-violet-200">
-                        <span id="badge-room" class="bg-violet-800/60 px-2 py-0.5 rounded-full font-medium tracking-wide">LOPEZ MELENDO</span>
-                        <span id="connection-status" class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="openRoomModal()" class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-xl text-xs font-medium transition flex items-center space-x-1.5 border border-white/10">
-                    <i class="fa-solid fa-key text-violet-300"></i>
-                    <span class="hidden sm:inline">Código</span>
-                </button>
-            </div>
-        </div>
-    </header>
+  <!-- Encabezado -->
+  <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-10">
+    <div class="max-w-md mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-xl font-bold flex items-center gap-2">
+          🛒 Compra Familiar
+        </h1>
+        <p class="text-xs text-indigo-200">Código: <span class="font-bold text-yellow-300">LOPEZ MELENDO</span></p>
+      </div>
+      <span class="bg-indigo-700 text-xs px-2 py-1 rounded-full text-indigo-100">Activo</span>
+    </div>
+  </header>
 
-    <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-5 pb-24 flex flex-col space-y-5">
+  <main class="max-w-md mx-auto p-4 space-y-4">
+
+    <!-- Formulario para Añadir Productos -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
+      <div>
+        <input type="text" id="itemName" placeholder="¿Qué falta comprar? (ej. Leche, Tomates...)" 
+               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+      </div>
+      
+      <div class="flex gap-2">
+        <input type="text" id="itemQty" placeholder="Cant. (1, 500g...)" value="1"
+               class="w-1/3 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
         
-        <!-- Add Item Card / Form -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 transition-all focus-within:shadow-md focus-within:border-violet-300 relative">
-            <form id="add-form" onsubmit="handleAddItem(event)" class="space-y-3" autocomplete="off">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <input type="text" id="item-input" placeholder="Añadir producto (ej. Leche, Tomates...)" required
-                        class="w-full pl-10 pr-24 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white transition text-sm sm:text-base"
-                        oninput="handleInputTyping(this.value)">
-                    
-                    <div class="absolute right-1.5 top-1.5 bottom-1.5 flex items-center space-x-1">
-                        <button type="submit" class="bg-violet-600 hover:bg-violet-700 active:scale-95 text-white px-4 py-1.5 rounded-lg font-medium text-sm transition shadow-sm flex items-center justify-center">
-                            Añadir
-                        </button>
-                    </div>
-                </div>
+        <select id="itemCategory" class="w-2/3 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white">
+          <option value="📦 Varios">📦 Varios</option>
+          <option value="🥦 Frutas y Verduras">🥦 Frutas y Verduras</option>
+          <option value="🥛 Lácteos">🥛 Lácteos</option>
+          <option value="🍞 Panadería">🍞 Panadería</option>
+          <option value="🥩 Carne y Pescado">🥩 Carne y Pescado</option>
+          <option value="🧃 Bebidas">🧃 Bebidas</option>
+          <option value="🧼 Limpieza e Higiene">🧼 Limpieza e Higiene</option>
+          <option value="❄️ Congelados">❄️ Congelados</option>
+        </select>
+      </div>
 
-                <!-- Autocomplete & Suggestions dropdown -->
-                <div id="autocomplete-dropdown" class="hidden absolute left-4 right-4 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-20 max-h-48 overflow-y-auto divide-y divide-slate-100">
-                    <!-- Dynamic suggestions populated here -->
-                </div>
-
-                <!-- Secondary options (Category & Quantity) -->
-                <div class="grid grid-cols-2 gap-2 pt-1">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Categoría</label>
-                        <select id="item-category" class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500">
-                            <option value="Frutas y Verduras">🥬 Frutas y Verduras</option>
-                            <option value="Lácteos y Huevos">🥛 Lácteos y Huevos</option>
-                            <option value="Panadería y Dulces">🥖 Panadería y Dulces</option>
-                            <option value="Carnicería y Pescadería">🥩 Carnicería y Pescadería</option>
-                            <option value="Despensa y Conservas">🥫 Despensa y Conservas</option>
-                            <option value="Bebidas">🧃 Bebidas</option>
-                            <option value="Limpieza y Hogar">🧹 Limpieza y Hogar</option>
-                            <option value="Higiene y Cuidado">🧴 Higiene y Cuidado</option>
-                            <option value="Congelados">🧊 Congelados</option>
-                            <option value="Otros">🛒 Otros</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Cantidad / Notas</label>
-                        <input type="text" id="item-qty" placeholder="ej. 2 litros, 1 bandeja"
-                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500">
-                    </div>
-                </div>
-            </form>
-        </section>
-
-        <!-- Filters & Summary Bar -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
-            <div class="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
-                <button onclick="setFilter('pending')" id="filter-pending" class="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-white text-violet-700 shadow-sm">
-                    Pendientes (<span id="count-pending">0</span>)
-                </button>
-                <button onclick="setFilter('bought')" id="filter-bought" class="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-600 hover:text-slate-900">
-                    Comprados (<span id="count-bought">0</span>)
-                </button>
-                <button onclick="setFilter('all')" id="filter-all" class="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-600 hover:text-slate-900">
-                    Todos
-                </button>
-            </div>
-            
-            <div class="flex items-center justify-between w-full sm:w-auto space-x-2">
-                <span id="list-counter" class="text-xs text-slate-400 font-medium px-1">0 artículos</span>
-                <button onclick="clearBoughtItems()" class="text-xs text-rose-500 hover:text-rose-700 font-medium px-2.5 py-1 rounded-lg hover:bg-rose-50 transition flex items-center space-x-1">
-                    <i class="fa-solid fa-trash-can"></i>
-                    <span>Limpiar comprados</span>
-                </button>
-            </div>
-        </div>
-
-        <div id="shopping-container" class="space-y-4">
-            <!-- Dynamic Category Groups populated via JS -->
-            <div id="empty-state" class="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 p-6">
-                <div class="w-16 h-16 bg-violet-50 text-violet-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </div>
-                <h3 class="font-semibold text-slate-700 mb-1">Tu lista está vacía</h3>
-                <p class="text-xs text-slate-400 max-w-xs mx-auto">Añade productos arriba o escoge de tus sugerencias frecuentes para empezar.</p>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Room Settings Modal -->
-    <div id="room-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform transition-all">
-            <div class="flex justify-between items-center mb-4">
-                <div class="flex items-center space-x-2.5">
-                    <div class="bg-violet-100 text-violet-600 p-2.5 rounded-xl">
-                        <i class="fa-solid fa-key"></i>
-                    </div>
-                    <h2 class="font-bold text-lg text-slate-800">Código de Familia</h2>
-                </div>
-                <button onclick="closeRoomModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <p class="text-xs text-slate-500 mb-4 leading-relaxed">
-                Este código sincroniza la lista en tiempo real con todos los miembros de tu familia. Asegúrate de que todos tengáis el mismo código.
-            </p>
-
-            <form onsubmit="handleRoomSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider">Nombre del Grupo</label>
-                    <input type="text" id="room-input" required placeholder="ej. LOPEZ MELENDO"
-                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-violet-700 uppercase focus:outline-none focus:ring-2 focus:ring-violet-500">
-                </div>
-                <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-xl shadow-sm transition">
-                    Conectar con esta Lista
-                </button>
-            </form>
-        </div>
+      <button onclick="addItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg text-sm transition flex items-center justify-center gap-1">
+        ➕ Añadir a la lista
+      </button>
     </div>
 
-    <!-- Notification Toast / Modal Box -->
-    <div id="notification-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-slate-100 text-center transform transition-all">
-            <div id="notif-icon-container" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-lg bg-amber-100 text-amber-600">
-                <i id="notif-icon" class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <h3 id="notif-title" class="font-bold text-slate-800 mb-1 text-base">Atención</h3>
-            <p id="notif-message" class="text-xs text-slate-500 mb-5 leading-relaxed">Mensaje de notificación.</p>
-            <div id="notif-buttons" class="flex space-x-2">
-                <button onclick="closeNotification()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 rounded-xl text-xs transition">
-                    Aceptar
-                </button>
-            </div>
-        </div>
+    <!-- Filtros -->
+    <div class="flex justify-between items-center text-xs text-slate-600 bg-white p-2 rounded-lg border border-slate-200">
+      <div class="flex gap-1">
+        <button onclick="setFilter('all')" id="filter-all" class="px-2 py-1 rounded bg-indigo-100 text-indigo-700 font-semibold">Todos</button>
+        <button onclick="setFilter('pending')" id="filter-pending" class="px-2 py-1 rounded hover:bg-slate-100">Pendientes</button>
+        <button onclick="setFilter('bought')" id="filter-bought" class="px-2 py-1 rounded hover:bg-slate-100">Comprados</button>
+      </div>
+      <button onclick="clearBought()" class="text-red-500 hover:underline">Borrar comprados</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- Lista de Artículos -->
+    <div id="shoppingList" class="space-y-2"></div>
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lopez-melendo-shopping-app';
-        
-        // Dynamic detection of Firebase Config with safe fallback for public GitHub hosting
-        let firebaseConfig = {};
-        try {
-            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-                firebaseConfig = JSON.parse(__firebase_config);
-            }
-        } catch (e) {
-            console.log("Firebase config not available or standalone mode");
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'lista_compra_lopez_melendo';
+    let currentFilter = 'all';
+
+    function getItems() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveItems(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      renderList();
+    }
+
+    function addItem() {
+      const nameInput = document.getElementById('itemName');
+      const qtyInput = document.getElementById('itemQty');
+      const catInput = document.getElementById('itemCategory');
+
+      const name = nameInput.value.trim();
+      const qty = qtyInput.value.trim() || '1';
+      const category = catInput.value;
+
+      if (!name) {
+        alert('Por favor escribe el nombre de un producto');
+        return;
+      }
+
+      const items = getItems();
+      
+      // Comprobar si ya existe
+      const existing = items.find(i => i.name.toLowerCase() === name.toLowerCase() && !i.bought);
+      if (existing) {
+        alert('¡Este producto ya está en la lista pendiente!');
+        return;
+      }
+
+      items.push({
+        id: Date.now(),
+        name: name,
+        qty: qty,
+        category: category,
+        bought: false
+      });
+
+      saveItems(items);
+      nameInput.value = '';
+      qtyInput.value = '1';
+      nameInput.focus();
+    }
+
+    function toggleBought(id) {
+      const items = getItems().map(item => {
+        if (item.id === id) item.bought = !item.bought;
+        return item;
+      });
+      saveItems(items);
+    }
+
+    function deleteItem(id) {
+      const items = getItems().filter(item => item.id !== id);
+      saveItems(items);
+    }
+
+    function clearBought() {
+      if (confirm('¿Quieres eliminar los artículos comprados?')) {
+        const items = getItems().filter(item => !item.bought);
+        saveItems(items);
+      }
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      ['all', 'pending', 'bought'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (f === filter) {
+          btn.className = 'px-2 py-1 rounded bg-indigo-100 text-indigo-700 font-semibold';
+        } else {
+          btn.className = 'px-2 py-1 rounded hover:bg-slate-100';
         }
+      });
+      renderList();
+    }
 
-        let db = null, auth = null, unsubscribeItems = null;
-        let currentRoom = localStorage.getItem('family_shopping_room') || 'LOPEZ MELENDO';
-        let currentFilter = 'pending'; // 'pending', 'bought', 'all'
-        let itemsData = [];
+    function renderList() {
+      const container = document.getElementById('shoppingList');
+      let items = getItems();
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('badge-room').innerText = currentRoom;
-            document.getElementById('room-input').value = currentRoom;
+      if (currentFilter === 'pending') items = items.filter(i => !i.bought);
+      if (currentFilter === 'bought') items = items.filter(i => i.bought);
 
-            // Initialize app UI immediately with local data so user never sees infinite loading
-            loadLocalItems();
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-slate-400 text-sm">
+            No hay productos en esta sección.
+          </div>`;
+        return;
+      }
 
-            if (Object.keys(firebaseConfig).length > 0) {
-                try {
-                    const app = initializeApp(firebaseConfig);
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-                    
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    setupRealtimeSync();
-                } catch (err) {
-                    console.warn("Firebase sync disabled/failed, running in local room mode:", err);
-                    document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-amber-400";
-                }
-            } else {
-                document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-emerald-400";
-            }
+      // Agrupar por categoría
+      const grouped = {};
+      items.forEach(item => {
+        if (!grouped[item.category]) grouped[item.category] = [];
+        grouped[item.category].push(item);
+      });
+
+      let html = '';
+      for (const [category, list] of Object.entries(grouped)) {
+        html += `<div class="font-semibold text-xs text-slate-500 mt-3 mb-1 px-1">${category}</div>`;
+        list.forEach(item => {
+          html += `
+            <div class="bg-white p-3 rounded-lg border border-slate-200 flex items-center justify-between gap-2 shadow-sm ${item.bought ? 'opacity-60 bg-slate-50' : ''}">
+              <div class="flex items-center gap-3 cursor-pointer flex-1" onclick="toggleBought(${item.id})">
+                <input type="checkbox" ${item.bought ? 'checked' : ''} class="w-4 h-4 text-indigo-600 rounded">
+                <div>
+                  <span class="text-sm font-medium ${item.bought ? 'line-through text-slate-400' : 'text-slate-800'}">${item.name}</span>
+                  <span class="text-xs text-slate-400 ml-1">(${item.qty})</span>
+                </div>
+              </div>
+              <button onclick="deleteItem(${item.id})" class="text-slate-400 hover:text-red-500 text-xs px-2 py-1">❌</button>
+            </div>
+          `;
         });
+      }
 
-        // Setup real-time Firestore synchronization
-        function setupRealtimeSync() {
-            if (!db || !auth || !auth.currentUser) {
-                loadLocalItems();
-                return;
-            }
+      container.innerHTML = html;
+    }
 
-            if (unsubscribeItems) unsubscribeItems();
+    // Permitir añadir pulsando Enter
+    document.getElementById('itemName')?.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') addItem();
+    });
 
-            const itemsColRef = collection(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`);
-            
-            unsubscribeItems = onSnapshot(itemsColRef, (snapshot) => {
-                itemsData = [];
-                snapshot.forEach((docSnap) => {
-                    itemsData.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                saveLocalItems(false);
-                renderApp();
-                document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-emerald-400";
-            }, (error) => {
-                console.error("Firestore sync error:", error);
-                document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-amber-400";
-                loadLocalItems();
-            });
-        }
+    // Cargar la lista inicial
+    renderList();
+  </script>
 
-        function loadLocalItems() {
-            const saved = localStorage.getItem(`local_list_${currentRoom}`);
-            itemsData = saved ? JSON.parse(saved) : getDefaultInitialItems();
-            renderApp();
-        }
-
-        function saveLocalItems(shouldRender = true) {
-            localStorage.setItem(`local_list_${currentRoom}`, JSON.stringify(itemsData));
-            if (shouldRender) renderApp();
-        }
-
-        // Setup real-time Firestore synchronization
-        function setupRealtimeSync() {
-            if (!db || !auth) {
-                // Fallback to local storage if firebase not available
-                loadLocalItems();
-                return;
-            }
-
-            if (unsubscribeItems) unsubscribeItems();
-
-            const itemsColRef = collection(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`);
-            
-            unsubscribeItems = onSnapshot(itemsColRef, (snapshot) => {
-                itemsData = [];
-                snapshot.forEach((docSnap) => {
-                    itemsData.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                renderApp();
-                document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-emerald-400";
-            }, (error) => {
-                console.error("Firestore sync error:", error);
-                document.getElementById('connection-status').className = "inline-block w-2 h-2 rounded-full bg-rose-500";
-                loadLocalItems();
-            });
-        }
-
-        function getDefaultInitialItems() {
-            return [
-                { id: '1', name: 'Leche entera', category: 'Lácteos y Huevos', qty: '2 litros', bought: false, createdAt: Date.now() },
-                { id: '2', name: 'Pan de molde', category: 'Panadería y Dulces', qty: '1 paquete', bought: false, createdAt: Date.now() },
-                { id: '3', name: 'Plátanos', category: 'Frutas y Verduras', qty: '1 kg', bought: true, createdAt: Date.now() }
-            ];
-        }
-
-        // Add item handler with smart duplicate detection & bought restoration
-        window.handleAddItem = async function(e) {
-            e.preventDefault();
-            const inputEl = document.getElementById('item-input');
-            const categoryEl = document.getElementById('item-category');
-            const qtyEl = document.getElementById('item-qty');
-
-            const rawName = inputEl.value.trim();
-            if (!rawName) return;
-
-            const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
-            const category = categoryEl.value;
-            const qty = qtyEl.value.trim();
-
-            // Check if item already exists in the list
-            const existingItem = itemsData.find(item => item.name.toLowerCase() === cleanName.toLowerCase());
-
-            if (existingItem) {
-                if (existingItem.bought) {
-                    // Item exists but is marked as bought -> Ask to reactivate
-                    showCustomModal(
-                        "Producto ya comprado",
-                        `"${cleanName}" ya está en la lista pero marcado como comprado. ¿Quieres volver a activarlo?`,
-                        "fa-rotate-right",
-                        "text-amber-600 bg-amber-100",
-                        [
-                            { text: "Cancelar", class: "bg-slate-100 text-slate-700 hover:bg-slate-200", onclick: "closeNotification()" },
-                            { text: "Volver a activar", class: "bg-violet-600 text-white hover:bg-violet-700", onclick: `restoreBoughtItem('${existingItem.id}', '${qty || existingItem.qty}')` }
-                        ]
-                    );
-                } else {
-                    // Item exists and is active -> Duplicate warning
-                    showCustomModal(
-                        "Ya está en la lista",
-                        `"${cleanName}" ya se encuentra activo en tu lista de la compra.`,
-                        "fa-circle-exclamation",
-                        "text-violet-600 bg-violet-100",
-                        [
-                            { text: "Entendido", class: "bg-violet-600 text-white hover:bg-violet-700", onclick: "closeNotification()" }
-                        ]
-                    );
-                }
-                return;
-            }
-
-            // Create new item
-            const newItemId = 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-            const newItemObj = {
-                id: newItemId,
-                name: cleanName,
-                category: category,
-                qty: qty || '',
-                bought: false,
-                createdAt: Date.now()
-            };
-
-            if (db && auth && auth.currentUser) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`, newItemId);
-                    await setDoc(docRef, newItemObj);
-                } catch (err) {
-                    console.error("Error adding to Firestore:", err);
-                    itemsData.push(newItemObj);
-                    saveLocalItems();
-                }
-            } else {
-                itemsData.push(newItemObj);
-                saveLocalItems();
-            }
-
-            inputEl.value = '';
-            qtyEl.value = '';
-            hideAutocomplete();
-            inputEl.focus();
-        };
-
-        // Toggle item bought status
-        window.toggleItemBought = async function(id) {
-            const item = itemsData.find(i => i.id === id);
-            if (!item) return;
-
-            const newBoughtState = !item.bought;
-
-            if (db && auth && auth.currentUser) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`, id);
-                    await updateDoc(docRef, { bought: newBoughtState });
-                } catch (err) {
-                    console.error("Error updating Firestore:", err);
-                    item.bought = newBoughtState;
-                    saveLocalItems();
-                }
-            } else {
-                item.bought = newBoughtState;
-                saveLocalItems();
-            }
-        };
-
-        // Restore bought item
-        window.restoreBoughtItem = async function(id, newQty) {
-            closeNotification();
-            const item = itemsData.find(i => i.id === id);
-            if (!item) return;
-
-            if (db && auth && auth.currentUser) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`, id);
-                    await updateDoc(docRef, { bought: false, qty: newQty || item.qty });
-                } catch (err) {
-                    item.bought = false;
-                    item.qty = newQty || item.qty;
-                    saveLocalItems();
-                }
-            } else {
-                item.bought = false;
-                item.qty = newQty || item.qty;
-                saveLocalItems();
-            }
-
-            document.getElementById('item-input').value = '';
-            document.getElementById('item-qty').value = '';
-        };
-
-        // Delete item
-        window.deleteItem = async function(id) {
-            if (db && auth && auth.currentUser) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`, id);
-                    await deleteDoc(docRef);
-                } catch (err) {
-                    itemsData = itemsData.filter(i => i.id !== id);
-                    saveLocalItems();
-                }
-            } else {
-                itemsData = itemsData.filter(i => i.id !== id);
-                saveLocalItems();
-            }
-        };
-
-        // Clear completed/bought items
-        window.clearBoughtItems = async function() {
-            const boughtItems = itemsData.filter(i => i.bought);
-            if (boughtItems.length === 0) return;
-
-            showCustomModal(
-                "Limpiar comprados",
-                `¿Deseas eliminar los ${boughtItems.length} artículos comprados de la lista?`,
-                "fa-trash-can",
-                "text-rose-600 bg-rose-100",
-                [
-                    { text: "Cancelar", class: "bg-slate-100 text-slate-700 hover:bg-slate-200", onclick: "closeNotification()" },
-                    { text: "Eliminar", class: "bg-rose-600 text-white hover:bg-rose-700", onclick: "confirmClearBought()" }
-                ]
-            );
-        };
-
-        window.confirmClearBought = async function() {
-            closeNotification();
-            const boughtItems = itemsData.filter(i => i.bought);
-
-            for (const item of boughtItems) {
-                if (db && auth && auth.currentUser) {
-                    try {
-                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', `list_${currentRoom}`, item.id);
-                        await deleteDoc(docRef);
-                    } catch (err) {
-                        console.error("Error clearing item", err);
-                    }
-                }
-            }
-            if (!db || !auth || !auth.currentUser) {
-                itemsData = itemsData.filter(i => !i.bought);
-                saveLocalItems();
-            }
-        };
-
-        // Filter tabs
-        window.setFilter = function(filter) {
-            currentFilter = filter;
-            ['pending', 'bought', 'all'].forEach(f => {
-                const btn = document.getElementById(`filter-${f}`);
-                if (f === filter) {
-                    btn.className = "flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-white text-violet-700 shadow-sm";
-                } else {
-                    btn.className = "flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-600 hover:text-slate-900";
-                }
-            });
-            renderApp();
-        };
-
-        // Input Typing / Autocomplete handler
-        window.handleInputTyping = function(val) {
-            const query = val.trim().toLowerCase();
-            const dropdown = document.getElementById('autocomplete-dropdown');
-
-            if (query.length < 1) {
-                hideAutocomplete();
-                return;
-            }
-
-            // Find matching previous items in itemsData
-            const matches = itemsData.filter(item => item.name.toLowerCase().includes(query));
-
-            if (matches.length === 0) {
-                hideAutocomplete();
-                return;
-            }
-
-            let html = '';
-            matches.slice(0, 5).forEach(item => {
-                const statusBadge = item.bought 
-                    ? '<span class="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-md font-medium">Comprado</span>' 
-                    : '<span class="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-md font-medium">Pendiente</span>';
-
-                html += `
-                    <div onclick="selectSuggestion('${item.name.replace(/'/g, "\\'")}', '${item.category}', '${item.bought}')" 
-                         class="px-4 py-2.5 hover:bg-violet-50 cursor-pointer flex justify-between items-center transition">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-clock-rotate-left text-slate-400 text-xs"></i>
-                            <span class="text-sm font-medium text-slate-700">${item.name}</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs text-slate-400">${item.category}</span>
-                            ${statusBadge}
-                        </div>
-                    </div>
-                `;
-            });
-
-            dropdown.innerHTML = html;
-            dropdown.classList.remove('hidden');
-        };
-
-        window.selectSuggestion = function(name, category, bought) {
-            document.getElementById('item-input').value = name;
-            document.getElementById('item-category').value = category;
-            hideAutocomplete();
-            if (bought === 'true') {
-                // If selected suggestion was bought, trigger direct restore check
-                const existing = itemsData.find(i => i.name.toLowerCase() === name.toLowerCase());
-                if (existing) {
-                    showCustomModal(
-                        "Reactivar producto",
-                        `"${name}" está marcado como comprado. ¿Quieres volver a activarlo en la lista?`,
-                        "fa-rotate-right",
-                        "text-amber-600 bg-amber-100",
-                        [
-                            { text: "Cancelar", class: "bg-slate-100 text-slate-700 hover:bg-slate-200", onclick: "closeNotification()" },
-                            { text: "Activar", class: "bg-violet-600 text-white hover:bg-violet-700", onclick: `restoreBoughtItem('${existing.id}', '')` }
-                        ]
-                    );
-                }
-            }
-        };
-
-        function hideAutocomplete() {
-            document.getElementById('autocomplete-dropdown').classList.add('hidden');
-        }
-
-        // Render application UI
-        function renderApp() {
-            const container = document.getElementById('shopping-container');
-            const emptyState = document.getElementById('empty-state');
-            
-            const pendingCount = itemsData.filter(i => !i.bought).length;
-            const boughtCount = itemsData.filter(i => i.bought).length;
-
-            document.getElementById('count-pending').innerText = pendingCount;
-            document.getElementById('count-bought').innerText = boughtCount;
-            document.getElementById('list-counter').innerText = `${itemsData.length} artículos en total`;
-
-            // Filter items based on active tab
-            let filtered = itemsData;
-            if (currentFilter === 'pending') {
-                filtered = itemsData.filter(i => !i.bought);
-            } else if (currentFilter === 'bought') {
-                filtered = itemsData.filter(i => i.bought);
-            }
-
-            if (filtered.length === 0) {
-                container.innerHTML = '';
-                container.appendChild(emptyState);
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-
-            // Group by category
-            const groups = {};
-            filtered.forEach(item => {
-                const cat = item.category || 'Otros';
-                if (!groups[cat]) groups[cat] = [];
-                groups[cat].push(item);
-            });
-
-            let html = '';
-            for (const [category, items] of Object.entries(groups)) {
-                html += `
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                        <div class="bg-slate-50 px-4 py-2.5 border-b border-slate-100 flex justify-between items-center">
-                            <h3 class="font-semibold text-xs uppercase tracking-wider text-slate-600">${category}</h3>
-                            <span class="text-xs font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full">${items.length}</span>
-                        </div>
-                        <div class="divide-y divide-slate-100">
-                `;
-
-                items.forEach(item => {
-                    const strikeClass = item.bought ? 'line-through text-slate-400 font-normal' : 'text-slate-800 font-medium';
-                    const bgClass = item.bought ? 'bg-slate-50/60' : 'bg-white hover:bg-slate-50/50';
-                    const checkBg = item.bought ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white';
-
-                    html += `
-                        <div class="px-4 py-3.5 flex items-center justify-between transition ${bgClass}">
-                            <div class="flex items-center space-x-3.5 flex-1 min-w-0 cursor-pointer" onclick="toggleItemBought('${item.id}')">
-                                <div class="w-6 h-6 rounded-lg border-2 flex items-center justify-center transition flex-shrink-0 ${checkBg}">
-                                    ${item.bought ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-sm truncate ${strikeClass}">${item.name}</p>
-                                    ${item.qty ? `<p class="text-xs text-slate-400 truncate">${item.qty}</p>` : ''}
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-1 ml-2 flex-shrink-0">
-                                <button onclick="deleteItem('${item.id}')" class="text-slate-300 hover:text-rose-500 p-2 rounded-lg transition" title="Eliminar">
-                                    <i class="fa-solid fa-trash-can text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += `
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-        }
-
-        // Room modal management
-        window.openRoomModal = function() {
-            document.getElementById('room-modal').classList.remove('hidden');
-        }
-
-        window.closeRoomModal = function() {
-            document.getElementById('room-modal').classList.add('hidden');
-        }
-
-        window.handleRoomSubmit = function(e) {
-            e.preventDefault();
-            const newRoom = document.getElementById('room-input').value.trim().toUpperCase();
-            if (!newRoom) return;
-
-            currentRoom = newRoom;
-            localStorage.setItem('family_shopping_room', currentRoom);
-            document.getElementById('badge-room').innerText = currentRoom;
-            closeRoomModal();
-            setupRealtimeSync();
-        }
-
-        // Custom Modal / Notification Box helper
-        window.showCustomModal = function(title, message, iconClass, iconColorClass, buttons) {
-            document.getElementById('notif-title').innerText = title;
-            document.getElementById('notif-message').innerText = message;
-            
-            const iconContainer = document.getElementById('notif-icon-container');
-            iconContainer.className = `w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-lg ${iconColorClass}`;
-            document.getElementById('notif-icon').className = `fa-solid ${iconClass}`;
-
-            const buttonsContainer = document.getElementById('notif-buttons');
-            let btnHtml = '';
-            buttons.forEach(btn => {
-                btnHtml += `<button onclick="${btn.onclick}" class="flex-1 font-medium py-2.5 rounded-xl text-xs transition ${btn.class}">${btn.text}</button>`;
-            });
-            buttonsContainer.innerHTML = btnHtml;
-
-            document.getElementById('notification-modal').classList.remove('hidden');
-        }
-
-        window.closeNotification = function() {
-            document.getElementById('notification-modal').classList.add('hidden');
-        }
-    </script>
 </body>
 </html>
